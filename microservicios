@@ -1,0 +1,31 @@
+**arquitectura de microservicio.**
+
+1. Microservicio de Autenticación y Usuarios 
+	•	Maneja todos los tipos de usuarios: clientes, administradores, empleados.
+	•	Funciones:
+	•	Crear cuenta / iniciar sesión.
+	•	Roles y permisos (qué puede hacer cada usuario).
+	•	Perfil del usuario e historial de compras.
+
+2. Microservicio de Cartelera, Películas y Funciones 
+	•	Maneja la parte visual y administrativa de las películas.
+	•	Funciones:
+	•	Administrador: agregar/editar/eliminar películas, características, clasificación, duración.
+	•	Administrador: configurar salas y funciones (horarios, número de asientos disponibles).
+	•	Usuario: ver la cartelera y horarios.
+
+3. Microservicio de Ventas y Reservas 
+	•	Maneja la compra de boletos y productos.
+	•	Funciones:
+	•	Usuario: seleccionar asientos, comprar boletos, ver QR o ticket.
+	•	Administrador/empleado: validar boletos.
+	•	Control de disponibilidad de asientos y productos (para no vender lo mismo dos veces).
+
+
+4. Microservicio de Pagos y Productos 
+	•	Maneja el proceso de pagos y productos de la dulcería.
+	•	Funciones:
+	•	Integrar con pasarelas de pago (tarjeta, PayPal, etc.).
+	•	Procesar pagos y reembolsos.
+	•	Administrador: gestionar productos (agregar, editar, eliminar, precios).
+	•	Usuario: comprar productos junto con boletos o por separado.

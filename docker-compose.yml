@@ -1,0 +1,148 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: cine_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: admin123
+      MYSQL_DATABASE: cine
+      MYSQL_USER: cine_user
+      MYSQL_PASSWORD: cine_pass
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-padmin123"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - cine_network
+
+  gateway:
+    build:
+      context: .
+      dockerfile: ./gateway/Dockerfile
+    container_name: cine_gateway
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./static:/app/static
+      - ./uploads:/app/uploads
+    depends_on:
+      mysql:
+        condition: service_healthy
+      auth_service:
+        condition: service_started
+      movies_service:
+        condition: service_started
+      theaters_service:
+        condition: service_started
+      products_service:
+        condition: service_started
+      tickets_service:
+        condition: service_started
+    networks:
+      - cine_network
+
+  auth_service:
+    build:
+      context: .
+      dockerfile: ./services/auth/Dockerfile
+    container_name: cine_auth
+    ports:
+      - "8001:8001"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      - DB_HOST=mysql
+      - DB_USER=cine_user
+      - DB_PASSWORD=cine_pass
+      - DB_NAME=cine
+    networks:
+      - cine_network
+
+  movies_service:
+    build:
+      context: .
+      dockerfile: ./services/movies/Dockerfile
+    container_name: cine_movies
+    ports:
+      - "8002:8002"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      - DB_HOST=mysql
+      - DB_USER=cine_user
+      - DB_PASSWORD=cine_pass
+      - DB_NAME=cine
+    volumes:
+      - ./uploads:/app/uploads
+    networks:
+      - cine_network
+
+  theaters_service:
+    build:
+      context: .
+      dockerfile: ./services/theaters/Dockerfile
+    container_name: cine_theaters
+    ports:
+      - "8003:8003"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      - DB_HOST=mysql
+      - DB_USER=cine_user
+      - DB_PASSWORD=cine_pass
+      - DB_NAME=cine
+    networks:
+      - cine_network
+
+  products_service:
+    build:
+      context: .
+      dockerfile: ./services/products/Dockerfile
+    container_name: cine_products
+    ports:
+      - "8004:8004"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      - DB_HOST=mysql
+      - DB_USER=cine_user
+      - DB_PASSWORD=cine_pass
+      - DB_NAME=cine
+    volumes:
+      - ./uploads:/app/uploads
+    networks:
+      - cine_network
+
+  tickets_service:
+    build:
+      context: .
+      dockerfile: ./services/tickets/Dockerfile
+    container_name: cine_tickets
+    ports:
+      - "8005:8005"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      - DB_HOST=mysql
+      - DB_USER=cine_user
+      - DB_PASSWORD=cine_pass
+      - DB_NAME=cine
+    networks:
+      - cine_network
+
+volumes:
+  mysql_data:
+
+networks:
+  cine_network:
+    driver: bridge

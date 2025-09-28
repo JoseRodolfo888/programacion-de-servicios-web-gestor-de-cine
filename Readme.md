@@ -1,0 +1,4 @@
+# programacion-de-servicios-web-gestor-de-cine
+**Nuestro proyecto consta en un programa de una app de cine que ayude a gestionar la administración como por ejemplo el cine CUT,que ayude a publicar la cartelera con todas las peliculas, funciones, cupos, compra de snacks y más desde la misma aplicación.**
+
+Contiene panel de usuario donde tiene (crear cuenta, iniciar sesion, ver cartelera y comprar boletos de la pelicula a eleccion, productos para la sala de cine), tambien panel de administrador donde puedes (agregar peliculas con sus caracteristicas, administrar salas, administrar las caracteristicas de las funciones y administrar los productos).

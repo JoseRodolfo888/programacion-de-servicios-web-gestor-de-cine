@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CineMagic Premium - Sistema de Gestión</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <h1>CineMagic</h1>
+                    <span class="logo-subtitle">Premium</span>
+                </div>
+                <nav class="nav" id="mainNav" style="display: none;">
+                    <a href="#" onclick="showMovies()">Cartelera</a>
+                    <a href="#" onclick="showProducts()">Combos</a>
+                    <a href="#" onclick="showMyTickets()" id="myTicketsLink" style="display: none;">Mis Boletos</a>
+                    <a href="#" onclick="showAdminPanel()" id="adminLink" style="display: none;">Administración</a>
+                </nav>
+                <div class="auth-section">
+                    <div id="authButtons">
+                        <button class="btn btn-outline" onclick="showLogin()">Iniciar Sesión</button>
+                        <button class="btn btn-primary" onclick="showRegister()">Registrarse</button>
+                    </div>
+                    <div id="userMenu" style="display: none;">
+                        <span id="userName"></span>
+                        <button class="btn btn-outline" onclick="logout()">Cerrar Sesión</button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Welcome Section -->
+            <section id="welcomeSection" class="welcome-section">
+                <div class="welcome-content">
+                    <h2 class="welcome-title">Bienvenido a CineMagic Premium</h2>
+                    <p class="welcome-subtitle">La experiencia cinematográfica más avanzada</p>
+                    <div class="welcome-features">
+                        <div class="feature-card">
+                            <div class="feature-icon">🎬</div>
+                            <h3>Cartelera Actualizada</h3>
+                            <p>Descubre los últimos estrenos y películas populares</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">🎫</div>
+                            <h3>Reserva Fácil</h3>
+                            <p>Selecciona tu asiento y compra boletos en segundos</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">🍿</div>
+                            <h3>Combos Premium</h3>
+                            <p>Disfruta de nuestros deliciosos combos y snacks</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Login Form -->
+            <section id="loginSection" class="auth-section-content" style="display: none;">
+                <div class="auth-form">
+                    <h2>Iniciar Sesión</h2>
+                    <form id="loginForm">
+                        <div class="form-group">
+                            <label for="loginEmail">Correo Electrónico</label>
+                            <input type="email" id="loginEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="loginPassword">Contraseña</label>
+                            <input type="password" id="loginPassword" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-full">Iniciar Sesión</button>
+                    </form>
+                    <p class="auth-switch">¿No tienes cuenta? <a href="#" onclick="showRegister()">Regístrate aquí</a></p>
+                </div>
+            </section>
+
+            <!-- Register Form -->
+            <section id="registerSection" class="auth-section-content" style="display: none;">
+                <div class="auth-form">
+                    <h2>Crear Cuenta</h2>
+                    <form id="registerForm">
+                        <div class="form-group">
+                            <label for="registerName">Nombre Completo</label>
+                            <input type="text" id="registerName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="registerAge">Edad</label>
+                            <input type="number" id="registerAge" min="1" max="120" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="registerEmail">Correo Electrónico</label>
+                            <input type="email" id="registerEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="registerPassword">Contraseña (mínimo 6 caracteres)</label>
+                            <input type="password" id="registerPassword" minlength="6" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-full">Crear Cuenta</button>
+                    </form>
+                    <p class="auth-switch">¿Ya tienes cuenta? <a href="#" onclick="showLogin()">Inicia sesión aquí</a></p>
+                </div>
+            </section>
+
+            <!-- Movies Section -->
+            <section id="moviesSection" class="content-section" style="display: none;">
+                <div class="section-header">
+                    <h2>Cartelera</h2>
+                    <button class="btn btn-primary" onclick="showAddMovie()" id="addMovieBtn" style="display: none;">Agregar Película</button>
+                </div>
+                <div id="moviesGrid" class="movies-grid"></div>
+            </section>
+
+            <!-- Products Section -->
+            <section id="productsSection" class="content-section" style="display: none;">
+                <div class="section-header">
+                    <h2>Combos y Productos</h2>
+                    <button class="btn btn-primary" onclick="showAddProduct()" id="addProductBtn" style="display: none;">Agregar Producto</button>
+                </div>
+                <div class="products-categories">
+                    <button class="category-btn active" onclick="filterProducts('all')">Todos</button>
+                    <button class="category-btn" onclick="filterProducts('combo')">Combos</button>
+                    <button class="category-btn" onclick="filterProducts('snack')">Snacks</button>
+                    <button class="category-btn" onclick="filterProducts('bebida')">Bebidas</button>
+                </div>
+                <div id="productsGrid" class="products-grid"></div>
+            </section>
+
+            <!-- Tickets Section -->
+            <section id="ticketsSection" class="content-section" style="display: none;">
+                <div class="section-header">
+                    <h2>Mis Boletos</h2>
+                </div>
+                <div id="ticketsGrid" class="tickets-grid"></div>
+            </section>
+
+            <!-- Admin Panel -->
+            <section id="adminSection" class="content-section" style="display: none;">
+                <div class="admin-dashboard">
+                    <h2>Panel de Administración</h2>
+                    <div class="admin-tabs">
+                        <button class="tab-btn active" onclick="showAdminTab('movies')">Películas</button>
+                        <button class="tab-btn" onclick="showAdminTab('theaters')">Salas</button>
+                        <button class="tab-btn" onclick="showAdminTab('showtimes')">Funciones</button>
+                        <button class="tab-btn" onclick="showAdminTab('products')">Productos</button>
+                        <button class="tab-btn" onclick="showAdminTab('users')">Usuarios</button>
+                        <button class="tab-btn" onclick="showAdminTab('reports')">Reportes</button>
+                    </div>
+                    <div id="adminContent" class="admin-content"></div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Modals -->
+        <div id="modal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <span class="modal-close" onclick="closeModal()">&times;</span>
+                <div id="modalBody"></div>
+            </div>
+        </div>
+
+        <!-- Shopping Cart -->
+        <div id="cart" class="cart" style="display: none;">
+            <div class="cart-header">
+                <h3>Carrito de Compras</h3>
+                <button class="cart-close" onclick="toggleCart()">&times;</button>
+            </div>
+            <div id="cartItems" class="cart-items"></div>
+            <div class="cart-footer">
+                <div class="cart-total">Total: $<span id="cartTotal">0.00</span></div>
+                <button class="btn btn-primary btn-full" onclick="checkout()">Proceder al Pago</button>
+            </div>
+        </div>
+
+        <!-- Cart Toggle Button -->
+        <button id="cartToggle" class="cart-toggle" onclick="toggleCart()" style="display: none;">
+            🛒 <span id="cartCount">0</span>
+        </button>
+    </div>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>

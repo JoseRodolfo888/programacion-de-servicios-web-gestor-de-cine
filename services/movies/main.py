@@ -4,6 +4,8 @@ import sys
 import os
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..'))
 
+## prueba de actualizacion de github##
+
 from shared.database import db_manager
 from shared.models import MovieCreate, MovieResponse
 from shared.auth import require_admin, get_current_user
